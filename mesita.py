@@ -1,7 +1,7 @@
 
 class Formatter(object):
     def __call__(self, table):
-        header = '\t'.join(table.columns)
+        header = '\t'.join([''] + table.columns)
         rows = [header]
 
         for row in table.rows:
@@ -43,4 +43,6 @@ class Table(object):
     def rows(self):
         return list(self._rows)
 
-    __str__ = Formatter()
+    def __str__(self):
+        f = Formatter()
+        return f(self)
