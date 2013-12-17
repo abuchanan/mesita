@@ -1,8 +1,11 @@
 __version__ = '1.0.1'
 
 class Formatter(object):
+    def __init__(self, row_heading_name=''):
+        self.row_heading_name = row_heading_name
+
     def __call__(self, table):
-        header = '\t'.join([''] + table.columns)
+        header = '\t'.join([self.row_heading_name] + table.columns)
         rows = [header]
 
         for row in table.rows:
@@ -18,11 +21,15 @@ class Formatter(object):
 
 
 class Table(object):
+    Formatter = Formatter
+
     def __init__(self, default=None):
         self.default = default
         self._data = {}
         self._columns = set()
         self._rows = set()
+
+        self.formatter = self.Formatter()
 
     def __getitem__(self, key):
         try:
@@ -45,5 +52,4 @@ class Table(object):
         return list(self._rows)
 
     def __str__(self):
-        f = Formatter()
-        return f(self)
+        return self.formatter(self)
