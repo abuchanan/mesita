@@ -50,6 +50,9 @@ class Table(object):
         self._columns.add(column)
         self._data[key] = value
 
+    def __str__(self):
+        return self.formatter(self)
+
     @property
     def columns(self):
         return list(self._columns)
@@ -58,5 +61,3 @@ class Table(object):
     def rows(self):
         return list(self._rows)
 
-    def __str__(self):
-        return self.formatter(self)
