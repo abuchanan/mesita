@@ -61,3 +61,8 @@ class Table(object):
     def rows(self):
         return list(self._rows)
 
+    def cells(self):
+        for row in self.rows:
+            for col in self.columns:
+                key = row, col
+                yield key, self.__getitem__(key)
