@@ -1,11 +1,13 @@
 __version__ = '1.0.1'
 
 class Formatter(object):
-    def __init__(self, row_heading_name=''):
+    def __init__(self, delimiter='\t', row_heading_name=''):
+        self.delimiter = delimiter
         self.row_heading_name = row_heading_name
 
     def __call__(self, table):
-        header = '\t'.join([self.row_heading_name] + table.columns)
+        # TODO just use csv.writer
+        header = self.delimiter.join([self.row_heading_name] + table.columns)
         rows = [header]
 
         for row in table.rows:
@@ -14,7 +16,7 @@ class Formatter(object):
             for col in table.columns:
                 x.append(table[row, col])
 
-            s = '\t'.join(str(col) for col in x)
+            s = self.delimiter.join(str(col) for col in x)
             rows.append(s)
 
         return '\n'.join(rows)
