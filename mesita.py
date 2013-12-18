@@ -23,8 +23,8 @@ class Formatter(object):
 class Table(object):
     Formatter = Formatter
 
-    def __init__(self, default=None):
-        self.default = default
+    def __init__(self, default_factory=None):
+        self.default_factory = default_factory
         self._data = {}
         self._columns = set()
         self._rows = set()
@@ -35,7 +35,12 @@ class Table(object):
         try:
             return self._data[key]
         except KeyError:
-            return self.default
+            if self.default_factory:
+                val = self.default_factory()
+                self.__setitem__(key, val)
+                return val
+            else:
+                raise
 
     def __setitem__(self, key, value):
         row, column = key
